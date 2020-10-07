@@ -1,0 +1,61 @@
+###############################################################
+#----                    Providers                        ----#
+###############################################################
+Google:
+     project     : your-project-id
+     region      : europe-west1
+
+###############################################################
+#----                     Backend                         ----#
+###############################################################
+Backend:
+     bucket      : your-backend-bucket-name
+     prefix      : terraform/state
+
+###############################################################
+#----                      Bucket                         ----#
+###############################################################
+Buckets:
+   - name : my-website-test-bucket-972650
+###############################################################
+#----                        VMs                          ----#
+###############################################################
+Instances:
+  - name           : myinstance1
+    machine_type   : n1-standard-1
+    zone           : europe-west1-b
+    image          : debian-cloud/debian-9
+    startup_script : startup_vm_eu_west1_b.sh
+    network        : default
+
+  - name           : myinstance2
+    machine_type   : n1-standard-1
+    zone           : europe-west1-c
+    image          : debian-cloud/debian-9
+    startup_script : startup_vm_eu_west1_c.sh
+    network        : default
+###############################################################
+#----                 compute_target_pool                 ----#
+###############################################################
+Compute_target_pools:
+  - name : instance-pool
+    instances :
+      - myinstance1
+      - myinstance2
+    health_checks :
+      - default
+###############################################################
+#----                    health_check                     ----#
+###############################################################
+Health_checks :
+- name               : default
+  request_path       : /
+  check_interval_sec : 1
+  timeout_sec        : 1
+###############################################################
+#----                    forwarding_rule                  ----#
+###############################################################
+Forwarding_rules :
+- name : website-forwarding-rule
+  target : instance-pool
+  port_range : 80

@@ -1,0 +1,6 @@
+steps:
+- name: gcr.io/devops-monit-frxxx-frxxx-dev/infrastructure_builder_beta:v0.1.4
+  id : "Infrastructure PLAN"
+  args: ['clean']
+  env:
+    - 'ENV=dev'
